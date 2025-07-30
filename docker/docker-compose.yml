@@ -1,0 +1,60 @@
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: Phoenix-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ../src:/var/www
+    networks:
+    - dbNetwork
+  composer:
+    image: composer:latest
+    container_name: Composer
+    volumes:
+      - ../src:/var/www
+    working_dir: /var/www
+    networks:
+      - dbNetwork
+  nginx:
+    image: nginx:latest
+    container_name: Phoenix-web
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ../src:/var/www
+      - ./nginx:/etc/nginx/conf.d
+    networks:
+    - dbNetwork
+  db:
+    image: mysql:9.3.0
+    container_name: Phoenix_db
+    volumes:
+      - mysqldata:/var/lib/mysql
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db1
+    networks:
+      - dbNetwork
+  phpmyadmin:
+    image: phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_ARBITRARY=1
+    networks:
+      - dbNetwork
+    depends_on:
+      - db
+networks:
+  dbNetwork:
+    driver: bridge
+volumes:
+  mysqldata:
