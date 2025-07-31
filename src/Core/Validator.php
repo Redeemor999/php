@@ -15,4 +15,25 @@ class Validator
         }
         return true;
     }
+
+    public function email($val)
+    {
+        if (filter_var($val, FILTER_SANITIZE_EMAIL) == false) {
+            $this->errors['email'] = 'Please enter a valid email address.';
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public function pswrdLen($val, $min = 6, $max = 255)
+    {
+        $val = strlen($val);
+        if (! ($val >= $min && $val <= $max)) {
+            $this->errors['pswrd'] = 'Password needs to be at least 6 characters.';
+            return false;
+        }
+        return true;
+    }
+    
 }

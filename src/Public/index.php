@@ -23,8 +23,6 @@ $method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
 $config = require __DIR__ . '/../Core/Config.php';
 $router = new Router;
 
-(new \Core\App($config['db']));
-
 $router
     ->get('/', [App\Controllers\HomeController::class, 'index'])
 
@@ -38,5 +36,9 @@ $router
     
     ->get('/contact', [App\Controllers\ContactController::class, 'index'])
     ->get('/about', [App\Controllers\AboutController::class, 'index'])
+    
+    ->get('/register', [App\Controllers\Users\UsersController::class, 'register'])
+    ->post('/register', [App\Controllers\Users\UsersController::class, 'store'])
+
     ;
-$router->resolve($uri, $method);
+(new \Core\App($config['db'], $router, $uri, $method))->route();

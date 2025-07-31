@@ -4,7 +4,7 @@ namespace App;
 
 class Router
 {
-    private $routes = [];
+    protected $routes = [];
 
     public function register($method, string $uri, array|callable $controller)
     {
