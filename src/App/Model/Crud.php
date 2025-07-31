@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use \Core\DB;
+use Core\Source;
 
 class Crud
 {
@@ -50,8 +51,16 @@ class Crud
         return $this->db->query("DELETE FROM $table WHERE $col =:$col", $data[$table]);
     }
 
-    public function update()
+    public function update(string $table, array $data)
     {
+        $col = key($data);
+        $key = key($data[$col]);
+        $$key = $data[$col][$key];
+        $val = Source::POST('note');
 
+        return $this->db->query("UPDATE $table SET $col = :$col WHERE $table.$key = :$key", [
+            $key => $$key,
+            $col => $val
+        ]);
     }
 }

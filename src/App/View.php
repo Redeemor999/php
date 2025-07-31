@@ -17,7 +17,7 @@ class View
     public function render()
     {
         $viewPath = VIEWS_PATH . '/' . $this->view . '.view.php';
-        // var_dump($params);
+        
         if(! empty($this->params)) {
             extract($this->params);
         }

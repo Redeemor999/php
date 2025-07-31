@@ -30,9 +30,11 @@ $router
 
     ->get('/notes', [App\Controllers\Notes\NotesController::class, 'index'])
     ->get('/note', [App\Controllers\Notes\NotesController::class, 'note'])
-    ->get('/note/create', [App\Controllers\Notes\NotesController::class, 'create'])
-    ->post('/note/store', [App\Controllers\Notes\NotesController::class, 'store'])
-    ->delete('/note/destroy', [App\Controllers\Notes\NotesController::class, 'delete'])
+    ->get('/notes/create', [App\Controllers\Notes\NotesController::class, 'create'])
+    ->post('/notes/store', [App\Controllers\Notes\NotesController::class, 'store'])
+    ->delete('/notes/destroy', [App\Controllers\Notes\NotesController::class, 'delete'])
+    ->post('/notes/edit', [App\Controllers\Notes\NotesController::class, 'edit'])
+    ->patch('/notes/update', [App\Controllers\Notes\NotesController::class, 'update'])
     
     ->get('/contact', [App\Controllers\ContactController::class, 'index'])
     ->get('/about', [App\Controllers\AboutController::class, 'index'])

@@ -2,22 +2,29 @@
 
 namespace App\Controllers\Notes;
 
-use \App\View;
+use \App\Model\Notes;
 use \Core\Validator;
-USE \App\Model\Notes;
+use \Core\Source;
+use \Core\Redirect;
 
 class NotesController
 {
+    protected Validator $validator;
+
+    public function __construct()
+    {
+        $this->validator = new Validator;        
+    }
     public function index()
     {
         $userId = 1;
 
         $notes = Notes::showAll($userId);
 
-        return View::make('/notes/index', [
+        return Redirect::to('/notes/index', [
             'heading' => 'My Notes:',
             'notes' => $notes
-        ])->render();
+        ]);
     }
 
     public function note()
@@ -26,42 +33,83 @@ class NotesController
         
         $note = Notes::show($id);
 
-        return View::make('/notes/note', [
+        return Redirect::to('/notes/note', [
             'heading' => $note,
-        ])->render();
+        ]);
     }
 
     public function create()
     {
         $note = $_GET['note'] ?? '';
 
-        return View::make('/notes/create', [
+        return Redirect::to('/notes/create', [
             'heading' => 'Create a Note:',
             'note' => $note ?? '',
             'errors' => $_GET['errors'] ?? ''
-        ])->render();
+        ]);
     }
 
     public function store()
     {
-        $note = htmlspecialchars($_POST['note']);
-        
-        Validator::string($note, 1, 500);
+        $note = Source::POST('note');
+
+        if (! $this->validator->string($note, 1, 500)) {
+
+            $errors = $this->validator->errors;
+
+            return Redirect::to('/notes/create', [
+                'heading' => 'Create a Note:',
+                'errors' => $errors['note'],
+                'note' => $note
+            ]);
+        }
         
         $data['notes'] = ['user_id' => 1, 'note' => $note];
 
-        // $this->crud->store($data);
+        Notes::create($data);
 
-        return header('location: /notes');
+        return Redirect::to('/notes');
     }
 
     public function delete()
     {
-        $row = intval($_POST['id']);
-        $data['notes'] = ['id' => $row];
+        $id = intval(Source::POST('id'));
 
-        // $this->crud->destroy($data);
+        Notes::delete($id);
 
-        return header('location: /notes');
+        return Redirect::to('/notes', [], 202);
+    }
+
+    public function edit()
+    {
+        $id = Source::POST('id');
+        $note = Source::POST('note');
+
+        return Redirect::to('/notes/edit', [
+            'heading' => 'Edit Your Note:',
+            'id' => $id,
+            'note' => $note
+        ]);
+    }
+
+    public function update()
+    {
+        $id = Source::POST('id');
+        $note = Source::POST('note');
+
+        if (! $this->validator->string($note, 1, 500)) {
+
+            $errors = $this->validator->errors;
+
+            return Redirect::to('/notes/edit', [
+                'heading' => 'Edit Your Note:',
+                'errors' => $errors['note'],
+                'note' => $note
+            ]);
+        }
+
+        Notes::patch($id);
+
+        Redirect::to('/notes', [], 202);
     }
 }
