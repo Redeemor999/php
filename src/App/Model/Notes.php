@@ -16,7 +16,7 @@ class Notes
         }
     }
 
-    public static function showAll($userId = 1)
+    public static function showAll($userId)
     {
         self::init();
         return self::$crud->showAll('notes', $userId);

@@ -46,6 +46,13 @@ class UsersController
             ]);
         }
         
+        if (Users::find($email)) {
+            $errors['credentials'] = 'Credentials are wrong!';
+            Redirect::to('/register', [
+                'errors' => $errors,
+                'heading' => 'Sign Up'
+            ]);
+        }
         $data['users'] = ['name' => $name, 'email' => $email, 'pswrd' => password_hash($pswrd, PASSWORD_BCRYPT)];
 
         Users::register($data);
@@ -68,20 +75,14 @@ class UsersController
             $errors = $this->validator->errors;
         }
 
-        if (!empty($errors)) {
-            Redirect::to('/users/login', [
-                'errors' => $errors,
-                'heading' => 'Sign In'
-            ]);
-        }
-
         $user = Users::find($email);
-        if (! password_verify($pswrd, $user['pswrd'])) {
+        if ( empty($user) || ! password_verify($pswrd, $user['pswrd'])) {
             $errors['credentials'] = 'Credentials are wrong!';
             Redirect::to('/users/login', [
                 'errors' => $errors,
                 'heading' => 'Sign In'
             ]);
+            exit;
         }
 
         foreach (array_keys($user) as $key) {

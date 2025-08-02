@@ -17,8 +17,7 @@ class NotesController
     }
     public function index()
     {
-        $userId = 1;
-
+        $userId = $_SESSION['id'];
         $notes = Notes::showAll($userId);
 
         return Redirect::to('/notes/index', [
@@ -52,8 +51,8 @@ class NotesController
     public function store()
     {
         $note = Source::POST('note');
-
-        if (! $this->validator->string($note, 1, 500)) {
+        $userId = $_SESSION['id'];
+        if (! $this->validator->string($note, $userId, 500)) {
 
             $errors = $this->validator->errors;
 
@@ -64,7 +63,7 @@ class NotesController
             ]);
         }
         
-        $data['notes'] = ['user_id' => 1, 'note' => $note];
+        $data['notes'] = ['user_id' => $userId, 'note' => $note];
 
         Notes::create($data);
 
