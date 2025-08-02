@@ -23,6 +23,7 @@ class UsersController
 
     public function store()
     {
+        $name = Source::POST('name');
         $email = Source::POST('email');
         $pswrd = Source::POST('password');
 
@@ -34,6 +35,10 @@ class UsersController
             $errors = $this->validator->errors;
         }
 
+        if (! $this->validator->string($name, 1, 255)) {
+            $errors = $this->validator->errors;
+        }
+
         if (!empty($errors)) {
             Redirect::to('/register', [
                 'errors' => $errors,
@@ -41,7 +46,7 @@ class UsersController
             ]);
         }
         
-        $data['users'] = ['email' => $email, 'pswrd' => $pswrd];
+        $data['users'] = ['name' => $name, 'email' => $email, 'pswrd' => password_hash($pswrd, PASSWORD_BCRYPT)];
 
         Users::register($data);
 
