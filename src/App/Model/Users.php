@@ -21,4 +21,10 @@ class Users
         self::init();
         return self::$crud->store($data);
     }
+
+    public static function find($email)
+    {
+        self::init();
+        return self::$crud->show('users', ['*' => ['email', $email]]);
+    }
 }

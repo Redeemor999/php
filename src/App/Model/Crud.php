@@ -16,15 +16,14 @@ class Crud
         ]);
     }
 
-    public function show(string $table, array $data, int $userId)
+    public function show(string $table, array $data)
     {
         $col = key($data);
         [$key, $val] = $data[$col];
         
-        return $this->db->queryOne("SELECT $col FROM $table WHERE $key=:$key AND user_id= :userId", [
-            $key => $val,
-            'userId' => $userId
-        ])[$col];
+        return $this->db->queryOne("SELECT $col FROM $table WHERE $key=:$key", [
+            $key => $val
+        ]);
     }
 
     /**

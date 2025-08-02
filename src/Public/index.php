@@ -15,8 +15,6 @@ $router = new Router;
 
 session_start();
 
-$_SESSION['login'] = false;
-
 $router->get('/', [App\Controllers\HomeController::class, 'index']);
 $router->get('/contact', [App\Controllers\ContactController::class, 'index']);
 $router->get('/about', [App\Controllers\AboutController::class, 'index']);
@@ -30,6 +28,7 @@ $router->post('/notes/edit', [App\Controllers\Notes\NotesController::class, 'edi
 $router->patch('/notes/update', [App\Controllers\Notes\NotesController::class, 'update']);
 
 $router->get('/users/login', [App\Controllers\Users\UsersController::class, 'login', 'Guest']);
+$router->post('/users/login', [App\Controllers\Users\UsersController::class, 'signin']);
 $router->get('/register', [App\Controllers\Users\UsersController::class, 'register', 'Guest']);
 $router->post('/register', [App\Controllers\Users\UsersController::class, 'store']);
 

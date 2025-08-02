@@ -13,7 +13,7 @@ require (__DIR__ . '/../partials/banner.php');
                 <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Sign In to Your Acount</h2>
             </div>
             <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form action="/register" method="POST" class="space-y-6">
+                <form action="/users/login" method="POST" class="space-y-6">
                     <div>
                         <label for="email" class="block text-sm/6 font-medium text-gray-900">Email address</label>
                         <div class="mt-2">

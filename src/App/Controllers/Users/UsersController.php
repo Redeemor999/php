@@ -50,11 +50,48 @@ class UsersController
 
         Users::register($data);
 
-        return Redirect::to('/login', [], 202);
+        return Redirect::to('/users/login', [], 202);
     }
 
     public function login()
     {
         return Redirect::to('/users/login', ['heading' => 'Sign In to Your Account:']);
+    }
+
+    public function signin()
+    {
+        $email = Source::POST('email');
+        $pswrd = Source::POST('password');
+
+
+        if (! $this->validator->email($email)) {
+            $errors = $this->validator->errors;
+        }
+
+        if (!empty($errors)) {
+            Redirect::to('/users/login', [
+                'errors' => $errors,
+                'heading' => 'Sign In'
+            ]);
+        }
+
+        $user = Users::find($email);
+        if (! password_verify($pswrd, $user['pswrd'])) {
+            $errors['credentials'] = 'Credentials are wrong!';
+            Redirect::to('/users/login', [
+                'errors' => $errors,
+                'heading' => 'Sign In'
+            ]);
+        }
+
+        foreach (array_keys($user) as $key) {
+            $_SESSION[$key] = $user[$key];
+        }
+
+        $_SESSION['login'] = true;
+        
+        Redirect::to('/index', [
+            'heading' => 'Welcome Home, ' . $_SESSION['name']
+        ]);
     }
 }
