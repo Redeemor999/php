@@ -7,7 +7,7 @@ require (__DIR__ . '/partials/banner.php');
 ?>
 <main>
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <?php var_dump($_SESSION) ?>
+        <?php print_r($_SESSION) ?>
     </div>
 </main>
 

@@ -35,8 +35,9 @@
                     <button type="button" class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                     <!-- <span class="absolute -inset-1.5"></span>
                     <span class="sr-only">Open user menu</span> -->
-                    <?php if ($_SESSION['login'] ?? false): ?>
-                        <img class="size-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+                    <?php if ($_SESSION['user']['login'] ?? false): ?>
+                        <img class="mr-3 size-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+                        <a href="/users/logout" class="<?= $uri == '/users/logout' ? 'bg-gray-900 text-white' : 'text-gray-300' ?>rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Log out</a>
                     <?php else: ?>
                         <a href="/register" class="<?= $uri == '/register' ? 'bg-gray-900 text-white' : 'text-gray-300' ?>rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Register</a>
                         <a href="/users/login" class="<?= $uri == '/users/login' ? 'bg-gray-900 text-white' : 'text-gray-300' ?>rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Log in</a>

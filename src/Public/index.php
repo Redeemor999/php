@@ -28,6 +28,7 @@ $router->post('/notes/edit', [App\Controllers\Notes\NotesController::class, 'edi
 $router->patch('/notes/update', [App\Controllers\Notes\NotesController::class, 'update']);
 
 $router->get('/users/login', [App\Controllers\Users\UsersController::class, 'login', 'Guest']);
+$router->get('/users/logout', [App\Controllers\Users\UsersController::class, 'logout', 'Auth']);
 $router->post('/users/login', [App\Controllers\Users\UsersController::class, 'signin']);
 $router->get('/register', [App\Controllers\Users\UsersController::class, 'register', 'Guest']);
 $router->post('/register', [App\Controllers\Users\UsersController::class, 'store']);

@@ -70,12 +70,12 @@ class UsersController
         $email = Source::POST('email');
         $pswrd = Source::POST('password');
 
-
         if (! $this->validator->email($email)) {
             $errors = $this->validator->errors;
         }
 
         $user = Users::find($email);
+
         if ( empty($user) || ! password_verify($pswrd, $user['pswrd'])) {
             $errors['credentials'] = 'Credentials are wrong!';
             Redirect::to('/users/login', [
@@ -86,13 +86,23 @@ class UsersController
         }
 
         foreach (array_keys($user) as $key) {
-            $_SESSION[$key] = $user[$key];
+            if ($key !== 'pswrd') {
+            $_SESSION['user'][$key] = $user[$key];
+            }
         }
-
-        $_SESSION['login'] = true;
+        
+        $_SESSION['user']['login'] = true;
         
         Redirect::to('/index', [
-            'heading' => 'Welcome Home, ' . $_SESSION['name']
+            'heading' => 'Welcome Home, ' . $_SESSION['user']['name']
         ]);
+    }
+
+    public function logout()
+    {
+        $_SESSION = [];
+        session_destroy();
+        
+        Redirect::to('/index', ['heading' => 'Welcome Home, Guest!']);
     }
 }
