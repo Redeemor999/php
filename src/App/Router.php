@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use \Core\Middleware;
 
 class Router
 {
@@ -43,8 +44,18 @@ class Router
     {
         $action = $this->routes[$method][$uri] ?? null;
         if (is_array($action)) {
-            [$class, $method] = $action;
-            
+            $key = $action[2] ?? '';
+            if (!empty($key)) {
+                $middleWare = (new Middleware)->{$key}();
+                if (!empty($middleWare)) {
+                    [$class, $method] = $middleWare;
+                } else {
+                    [$class, $method] = $action;
+                }
+            } else {
+                [$class, $method] = $action;
+            }
+
             if (class_exists($class)) {
                 $class = new $class;
                 if (method_exists($class, $method)) {
@@ -53,9 +64,9 @@ class Router
             }
         }
 
-        // if (is_callable($action)) {
-        //     return call_user_func($action);
-        // }
+        if (is_callable($action)) {
+            return call_user_func($action);
+        }
 
         $this->abort(404);
     }

@@ -47,4 +47,9 @@ class UsersController
 
         return Redirect::to('/login', [], 202);
     }
+
+    public function login()
+    {
+        return Redirect::to('/users/login', ['heading' => 'Sign In to Your Account:']);
+    }
 }
