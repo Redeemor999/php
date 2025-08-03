@@ -33,5 +33,4 @@ $router->post('/users/login', [App\Controllers\Users\UsersController::class, 'si
 $router->get('/register', [App\Controllers\Users\UsersController::class, 'register', 'Guest']);
 $router->post('/register', [App\Controllers\Users\UsersController::class, 'store']);
 
-    ;
 (new \Core\App($config['db'], $router, $uri, $method))->route();

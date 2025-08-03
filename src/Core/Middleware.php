@@ -9,7 +9,7 @@ class Middleware
 {
     public function Auth()
     {
-        if (!isset($_SESSION['user']['login']) || $_SESSION['user']['login']==false) {
+        if (empty($_SESSION['user']) || $_SESSION['user']['login']==false) {
             return [UsersController::class, 'login'];
         }
         return;
@@ -17,7 +17,7 @@ class Middleware
 
     public function Guest()
     {
-        if ($_SESSION['user']['login']==true) {
+        if (isset($_SESSION['user']) && isset($_SESSION['user']['login']) && $_SESSION['user']['login'] == true) {
             return [HomeController::class, 'index'];
         }
         return;
